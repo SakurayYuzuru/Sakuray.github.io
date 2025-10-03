@@ -36,6 +36,9 @@ jobs:
 
       - name: Build
         run: npm run build
+             npx hexo clean
+             npx hexo generate
+             touch public/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
