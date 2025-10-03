@@ -1,27 +1,28 @@
-name: Pages
+name: Hexo GitHub Pages
 
 on:
   push:
     branches:
-      - main # default branch
+      - main   # 当 main 分支有推送时触发
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # If your repository depends on submodule, please see: https://github.com/actions/checkout
-          fetch-depth: 0
 
-      - name: Use Node.js 24
+    steps:
+      # 1️⃣ 拉取仓库
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0         # 拉取完整历史，保证主题文件存在
+
+      # 2️⃣ 安装 Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          # Examples: 20, 18.19, >=16.20.2, lts/Iron, lts/Hydrogen, *, latest, current, node
-          # Ref: https://github.com/actions/setup-node#supported-version-syntax
           node-version: "24"
 
+      # 3️⃣ 缓存依赖
       - name: Cache NPM dependencies
         uses: actions/cache@v4
         with:
@@ -29,34 +30,17 @@ jobs:
           key: ${{ runner.OS }}-npm-cache
           restore-keys: |
             ${{ runner.OS }}-npm-cache
-            
-      - name: Install Dependencies
-        run: npm install && npx hexo clean && npx hexo generate
 
-      - name: Build
-        run: npm run build
-             npx hexo clean
-             npx hexo generate
-             touch public/.nojekyll
+      # 4️⃣ 安装依赖并生成 Hexo 静态文件
+      - name: Build Hexo site
+        run: |
+          npm install
+          npx hexo clean
+          npx hexo generate
+          touch public/.nojekyll     # 防止 GitHub Pages 使用 Jekyll
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
-          
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
+      # 5️⃣ 部署到 gh-pages 分支
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
