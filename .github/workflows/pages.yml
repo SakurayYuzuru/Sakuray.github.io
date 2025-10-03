@@ -14,7 +14,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # If your repository depends on submodule, please see: https://github.com/actions/checkout
           fetch-depth: 0
-          submodules: false
 
       - name: Use Node.js 24
         uses: actions/setup-node@v4
