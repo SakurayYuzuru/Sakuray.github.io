@@ -35,6 +35,7 @@ jobs:
       - name: Build Hexo site
         run: |
           npm install
+          npm install hexo-theme-kratos-rebirth@latest
           npx hexo clean
           npx hexo generate
           touch public/.nojekyll     # 防止 GitHub Pages 使用 Jekyll

@@ -39,8 +39,8 @@ vendors:
       version: 3.6.0
     qrcode_js: 
       version: 1.0.0
-    mermaid: 
-      version: 9.1.1
+    mermaid:
+      version: "10.9.1" 
     meting:
       version: 2.0.1
 
@@ -255,3 +255,12 @@ friends:
 # Misc 杂项
 misc:
   showWordCountEstimateWavy: true # 在文章字数处显示表示大约字数的波浪号
+
+# Math
+mathjax:
+    enable: true
+
+mermaid:
+  enable: true
+  theme: "default"
+  startOnLoad: true
