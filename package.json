@@ -26,7 +26,7 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-theme-landscape": "^1.0.0",
-    "katex": "^0.16.23",
+    "katex": "^0.16.25",
     "mermaid": "^11.12.0"
   }
 }
